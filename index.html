@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    #todo-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #todo-list li {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f4f4f4;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    button:hover {
+      background-color: darkred;
+    }
+
+    input {
+      padding: 10px;
+      width: 70%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #add-btn {
+      padding: 10px 20px;
+      background-color: green;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-left: 10px;
+    }
+
+    #add-btn:hover {
+      background-color: darkgreen;
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 600px) {
+      body {
+        margin: 10px;
+      }
+
+      input {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      #add-btn {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      #todo-list li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      button {
+        margin-top: 10px;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>To-Do List</h1>
+
+  <!-- Input to add a new item -->
+  <input type="text" id="todo-input" placeholder="Enter new item">
+  <button id="add-btn">Add</button>
+
+  <!-- To-do list -->
+  <ul id="todo-list"></ul>
+
+  <script>
+    // Initialize an empty array for storing todo items
+    let todos = [];
+
+    // Get references to the input field, add button, and todo list
+    const todoInput = document.getElementById('todo-input');
+    const addButton = document.getElementById('add-btn');
+    const todoList = document.getElementById('todo-list');
+
+    // Function to add a new item to the todo list
+    function addTodo() {
+      const todoText = todoInput.value; // Get the text from the input field
+
+      if (todoText === "") {
+        alert("Please enter an item.");
+        return;
+      }
+
+      todos.push(todoText); // Add the new item to the todos array
+      todoInput.value = ""; // Clear the input field
+      displayTodos(); // Update the displayed list
+    }
+
+    // Function to display the todo items on the page
+    function displayTodos() {
+      todoList.innerHTML = ""; // Clear the current list
+
+      // Loop through the todos array and create list items
+      todos.forEach((todo, index) => {
+        const listItem = document.createElement('li'); // Create a new list item
+        listItem.textContent = todo; // Set the text content
+
+        // Create a delete button for each item
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = "Delete";
+        deleteButton.onclick = function () {
+          deleteTodo(index); // Call the delete function when button is clicked
+        };
+
+        // Add the delete button to the list item
+        listItem.appendChild(deleteButton);
+
+        // Add the list item to the todo list
+        todoList.appendChild(listItem);
+      });
+    }
+
+    // Function to delete an item from the todo list
+    function deleteTodo(index) {
+      todos.splice(index, 1); // Remove the item from the array
+      displayTodos(); // Update the displayed list
+    }
+
+    // Add event listener to the add button
+    addButton.addEventListener('click', addTodo);
+
+    // Optional: Add the ability to press Enter to add an item
+    todoInput.addEventListener('keypress', function (event) {
+      if (event.key === 'Enter') {
+        addTodo();
+      }
+    });
+
+  </script>
+
+</body>
+</html>
